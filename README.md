@@ -1,5 +1,5 @@
 # SwaggyBot
-
+SwaggyBot is a bot for discord, it is in development, for now it just can send GIFS and answer to some commands
 ## Configure
 Create a file .env and configure your tokens.
 i.e:
