@@ -1,0 +1,6 @@
+* -help "Show command list"
+* -test "Testing if bot is online"
+* -insult @usuario "Insulta a un usuario"
+* -trompa @usuario "Manda una trompá a un usuario"
+* -flip "Lanza una moneda"
+* -wololo "Wololosea el server"
