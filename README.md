@@ -1,0 +1,3 @@
+# SwaggyBot
+
+##Configure
