@@ -1,13 +1,19 @@
-const { Client, MessageEmbed, MessageAttachment } = require("discord.js");
-const giphy = require("./modules/giphy");
+const { Client, MessageEmbed, MessageAttachment, VoiceChannel, Guild } = require("discord.js");
+const giphy = require("./actions/giphy");
+const audios = require("./actions/audios");
+const flip = require('./actions/flipAcoin'); 
 const fs = require("fs");
-require('dotenv').config();
-const DiscordToken = process.env.DISCORD_TOKEN; 
+const path = require("path");
+require("dotenv").config();
+const DiscordToken = process.env.DISCORD_TOKEN;
 const client = new Client();
-
+const guild = new Guild(client, Object()); 
+var color = "0xff0000";
+var newColor = "0x00ff00";
 const PREFIX = "-";
 client.on("ready", () => {
   console.log(`logged in as ${client.user.tag}`); //este método es, cuando el bot esté listo, ejecute la función
+
 });
 
 client.on("message", (message) => {
@@ -23,33 +29,32 @@ client.on("message", (message) => {
           .setTitle("Command list")
           .setColor("0xff0000")
           .setDescription(buf.toString());
-           message.channel.send(embed);
+        message.channel.send(embed);
         // fs.close("commands.txt");
       });
       break;
 
     case `${PREFIX}flip`:
-      var result = Math.floor(Math.random() * (3 - 1) + 1);
-      var cc;
-      console.log(result);
-      switch (result) {
-        case 1:
-          cc = "Tail";
-          break;
-
-        case 2:
-          cc = "Head";
-          break;
-      }
+      var cc = flip.tossCoin(); 
       const text = `${message.author} flipped a coin and the result is: ${cc}`;
       const tags = "flip a coin";
-      const color = "0xff0000";
-      PrintGIF(text, tags, color, message);
+
+      SendGIF(text, tags, color, message);
       break;
 
     case `${PREFIX}wololo`:
-      var attatchment = new MessageAttachment("./gifs/wololo.gif");
+      const directory = path.join(__dirname, "gifs", "wololo.gif");
+      var attatchment = new MessageAttachment(directory);
+      message.channel.send(`${message.author} ha wololoseado el servidor`); 
       message.channel.send(attatchment);
+      console.log(attatchment.url);
+      break;
+
+    case `${PREFIX}o`:
+      var voiceChannel = new VoiceChannel(guild, Object());
+      voiceChannel.join().then((connection) => {
+        console.log("Connected");
+      });
       break;
   }
 
@@ -65,24 +70,28 @@ client.on("message", (message) => {
     const user = message.mentions.users.first();
     if (user) {
       const text = `${message.author} le pegó una trompá a ${user}`;
-      const tags = "onepunchman, onepunch, saitama,anime";
-      const color = "0xff0000";
-      PrintGIF(text, tags, color, message);
+      const tags = "onepunchman, onepunch, saitama, anime";
+
+      SendGIF(text, tags, color, message);
     }
   }
 });
 
-function PrintGIF(text, tags, color, message) {
-  giphy.BrignGif(tags).then((gif) => {
-    let embed = new MessageEmbed()
-      .setColor(color)
-      .setDescription(text)
-      .setImage(gif);
-    message.channel.send({ embed: embed });
-  }).catch(err =>{
-    message.channel.send("Ha habido un error");
-    console.log(err); 
-  });
+function SendGIF(text, tags, color, message) {
+  //use it when you want a gif from Giphy
+  giphy
+    .BringGif(tags)
+    .then((gif) => {
+      let embed = new MessageEmbed()
+        .setColor(color)
+        .setDescription(text)
+        .setImage(gif);
+      message.channel.send({ embed: embed });
+    })
+    .catch((err) => {
+      message.channel.send("Ha habido un error");
+      console.log(err);
+    });
 }
 
 client.login(DiscordToken);
