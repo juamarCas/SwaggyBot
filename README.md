@@ -11,4 +11,4 @@ GIPHY_TOKEN = (Paste your giphy token here)
 
 ## Audios
 
-the audios where from https://ageofempires.fandom.com/wiki/Taunts
+the audios were from https://ageofempires.fandom.com/wiki/Taunts
