@@ -13,4 +13,22 @@ function BringGif(tags){
           return err; 
       });    
 }
-module.exports.BringGif = BringGif; 
+
+function SendGIF(text, tags, color, message, embed) {
+    //use it when you want a gif from Giphy
+    
+       BringGif(tags)
+      .then((gif) => {
+        
+          embed.setColor(color)
+          .setDescription(text)
+          .setImage(gif);
+        message.channel.send({ embed: embed });
+      })
+      .catch((err) => {
+        message.channel.send("Ha habido un error");
+        console.log(err);
+      });
+  }
+
+module.exports.SendGIF = SendGIF; 
