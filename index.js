@@ -47,7 +47,6 @@ client.on("message", (message) => {
       var attatchment = new MessageAttachment(directory);
       message.channel.send(`${message.author} ha wololoseado el servidor`); 
       message.channel.send(attatchment);
-      console.log(attatchment.url);
       break;
 
     case `${PREFIX}o`:
